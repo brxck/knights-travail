@@ -26,10 +26,29 @@ class Knight
   end
 
   def find_path(final)
-    @move_tree.root.insert(move_set)
+    new_queue = [@move_tree.root]
     until (result = @move_tree.search(final))
-      @move_tree.each { |node| node.insert(move_set(node.value)) }
+      queue = new_queue
+      queue.each do |node|
+        new_queue = node.insert(move_set(node.value))
+      end
     end
-    result.value
+    print_path(trace_path(result))
+  end
+
+  def trace_path(node)
+    path = [node.value]
+    until node.parent == "is_root"
+      node = node.parent
+      path << node.value
+    end
+    path.reverse
+  end
+
+  def print_path(path)
+    path.each do |x, y| 
+      print "(#{x}, #{y})\n" if path.last == [x, y]
+      print "(#{x}, #{y}) -> " unless path.last == [x, y]
+    end
   end
 end

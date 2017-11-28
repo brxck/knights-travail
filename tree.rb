@@ -3,7 +3,7 @@ class Tree
 
   attr_reader :root
   def initialize(root)
-    @root = Node.new(root, :root)
+    @root = Node.new(root, "is_root")
   end
 
   class Node
@@ -15,7 +15,13 @@ class Tree
     end
 
     def insert(array)
-      array.each { |x, y| @children << Node.new([x, y], self) }
+      node_list = []
+      array.each do |x, y|
+        node = Node.new([x, y], self)
+        @children << node
+        node_list << node
+      end
+      node_list
     end
   end
 
