@@ -63,9 +63,3 @@ class BinarySearchTree
     end
   end
 end
-
-array = Array.new(10) { rand(100) }
-@tree = BinarySearchTree.new
-@tree.build_tree(array)
-@tree.root.insert(88)
-puts @tree.dfs_rec(88)
