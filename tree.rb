@@ -1,4 +1,6 @@
 class Tree
+  include Enumerable
+
   attr_reader :root
   def initialize(root)
     @root = Node.new(root, :root)
@@ -13,7 +15,7 @@ class Tree
     end
 
     def insert(array)
-      array.each { |item| @children << Node.new(item, self) }
+      array.each { |x, y| @children << Node.new([x, y], self) }
     end
   end
 
@@ -24,10 +26,6 @@ class Tree
       node.children.each { |child| queue << child }
     end
     nil
-  end
-
-  def build_tree(array)
-    array.each { |value| @root.insert(value) }
   end
 
   def search(value)
