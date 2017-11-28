@@ -1,7 +1,7 @@
 class BinarySearchTree
   attr_reader :root
-  def initialize
-    @root = nil
+  def initialize(root = nil)
+    @root = root.nil? ? nil : Node.new(root)
   end
 
   class Node
@@ -26,9 +26,23 @@ class BinarySearchTree
     end
   end
 
+  def each
+    queue = [@root]
+    queue.each do |node|
+      yield node
+      queue << node.left unless node.left.nil?
+      queue << node.right unless node.right.nil?
+    end
+    nil
+  end
+
   def build_tree(array)
-    @root = Node.new(array[0])
-    array.each { |value| @root.insert(value) unless value.equal? array.first }
+    if @root.nil?
+      @root = Node.new(array[0])
+      array.each_with_index { |value, i| @root.insert(value) }
+    else
+      array.each_with_index { |value, i| @root.insert(value) unless i.zero? }
+    end
   end
 
   def breadth_first_search(value)
@@ -39,27 +53,5 @@ class BinarySearchTree
       queue << node.right unless node.right.nil?
     end
     nil
-  end
-
-  def depth_first_search(value)
-    stack = [@root]
-    until stack.empty?
-      node = stack.pop
-      return node if node.value == value
-      stack << node.left unless node.left.nil? || node.value < value
-      stack << node.right unless node.right.nil? || node.value >= value
-    end
-    nil
-  end
-
-  def dfs_rec(value, node = @root)
-    return nil if node.nil?
-    if value < node.value
-      dfs_rec(value, node.left)
-    elsif value > node.value
-      dfs_rec(value, node.right)
-    else
-      return node
-    end
   end
 end
