@@ -53,3 +53,8 @@ class Knight
     end
   end
 end
+
+def knight_path(start_pos, end_pos)
+  knight = Knight.new(start_pos)
+  knight.find_path(end_pos)
+end
