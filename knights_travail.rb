@@ -17,11 +17,11 @@ class Knight
   end
 
   def move_set(pos = @start_pos)
-    move_set = @movements.map do |movement|
-      move = [movement, pos].transpose.map(&:sum) # sum x & y coordinates
-      on_board?(move) ? move : nil
+    move_set = []
+    @movements.each do |movement|
+      move = [pos[0] + movement[0], pos[1] + movement[1]] # sum x & y coordinates
+      move_set << move if on_board?(move)
     end
-    move_set.delete(nil)
     move_set
   end
 
@@ -29,8 +29,9 @@ class Knight
     new_queue = [@move_tree.root]
     until (result = @move_tree.search(final))
       queue = new_queue
+      new_queue = []
       queue.each do |node|
-        new_queue = node.insert(move_set(node.value))
+        new_queue += node.insert(move_set(node.value))
       end
     end
     print_path(trace_path(result))
@@ -46,7 +47,7 @@ class Knight
   end
 
   def print_path(path)
-    path.each do |x, y| 
+    path.each do |x, y|
       print "(#{x}, #{y})\n" if path.last == [x, y]
       print "(#{x}, #{y}) -> " unless path.last == [x, y]
     end
